@@ -9,3 +9,5 @@ The gender paygap is a well documented issue, which has been heavily debated, es
 This project demonstrates which countries have more and less of a gender pay gap.This allows us to compare the individual countries against each other as well as comparing the individual countries against themselves between 2010 and 2018. Secondly, this project focuses on the UK, comparing the change in gender pay gap from 2010 till 2018 between the average of all EU countries and the Unites Kindgom. 
 
 Citation: Gender pay gap in unadjusted form. Eurostat, the statistical office of the European Union . (n.d.). Retrieved April 24, 2022, from https://ec.europa.eu/eurostat/databrowser/view/tesem180/default/table?lang=en 
+ 
+As per the "set working directory" in the code, place the "data" folder into the computers documents section
