@@ -10,4 +10,4 @@ This project demonstrates which countries have more and less of a gender pay gap
 
 Citation: Gender pay gap in unadjusted form. Eurostat, the statistical office of the European Union . (n.d.). Retrieved April 24, 2022, from https://ec.europa.eu/eurostat/databrowser/view/tesem180/default/table?lang=en 
  
-As per the "set working directory" in the code, place the "data" folder into the computers documents section
+As per the "set working directory" in the code, place the "data" folder into the computers documents section before you run the code.
