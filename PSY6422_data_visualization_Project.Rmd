@@ -1,0 +1,104 @@
+---
+title: "index"
+author: "210172276"
+date: "5/16/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE)
+library(tidyverse)
+library(here)
+library(ggplot2)
+```
+
+# Equality of hourly wages? Gender pay gap in EU countries
+##psy6422_data_project
+
+# Research Question 
+The pay gap between women and men has been widely documented and discussed especially the past few years. This begs the question: How do the EU countries stack up against each other and which ones have improved in the last few years. 
+
+# Data Origins
+The gender paygap is a well documented issue, which has been heavily debated, especially in the last few years. Throughout history, women have been subjugated to receiving lower hourly wage than men. While the roles of women in today's society have changed, we still continue to receive less pay than men doing the same job. This data is therefore looking at many countries in the EU (including UK before 2018) between 2010 and 2020. This data was reported by Eurostat. This data visualization project demonstrates the EU countries which pay men and women similar wages compared to those with a large pay gap. The data is presented as a percent of gender pay gap.   
+
+# Importing Data 
+```{r data import and view}
+### reading and viewing the first original data
+setwd("~/Documents/psy6422_visual_data_Assignment")
+df <- read_csv(here("data","raw", "genderpaygap_raw_data.csv"))
+#view first lines of original data 
+head(df, n = 10)
+```
+
+# Data Preperation
+```{r wrangle data}
+#organize data to remove NA and unnecessary rows  
+df1 <- df[1,1]
+df1 <- df[2,1]
+df1 <- df[,-1]
+df1 <- df[]
+df1 <- c(1:10)
+df1 <- df[-c(1:9),]
+df1 <- seq(3,21,2)
+df1 <- df[-c(33:46),]
+
+df1 <- df[-c(1:9,42:55 ),-seq(3,23,2)]
+```
+
+```{r rename colums}
+#renaming the columns of the original data set
+colnames(df1) <- c("country", "2010" , "2011" , "2012" , "2013" , "2014" , "2015" , "2016" , "2017" , "2018" , "2019" , "2020")
+```
+
+```{r convert to numeric}
+#changign the data from each year to numeric from character 
+df1$`2010` <- as.numeric(df1$`2010`)
+df1$`2011` <- as.numeric(df1$`2011`)
+df1$`2012` <- as.numeric(df1$`2012`)
+df1$`2013` <- as.numeric(df1$`2013`)
+df1$`2014` <- as.numeric(df1$`2014`)
+df1$`2015` <- as.numeric(df1$`2015`)
+df1$`2016` <- as.numeric(df1$`2016`)
+df1$`2017` <- as.numeric(df1$`2017`)
+df1$`2018` <- as.numeric(df1$`2018`)
+df1$`2019` <- as.numeric(df1$`2019`)
+df1$`2020` <- as.numeric(df1$`2020`)
+```
+
+```{r column names}
+#changing column names to fit with rbind
+colnames(df1) <- c("country", "data" , "2011" , "2012" , "2013" , "2014" , "2015" , "2016" , "2017" , "data" , "2019" , "2020")
+df2 <- rbind(df1[ ,c(1,2)] , df1[ , c(1,10)])
+df2$year <- 2010
+df2$year[c(33:64)] <- 2018 
+#changing year into character from numeric
+df2$year <- as.character(df2$year)
+head(df2)
+```
+
+# Visualization 1: EU countries pay gap 2010 vs 2018
+```{r fig.width= 10 , fig.height= 12}
+#Bar chart representing the gender pay gap between the earliest year, 2010 and the latest date including UK data, 2018. 
+ggplot(data = df2, aes(x = reorder(country , `data`) , y = `data` , fill = year)) + coord_flip() + geom_col(width = 0.6 , position = position_dodge2(preserve = "single" , width = 0.8)) +scale_fill_manual(values= c("purple" , "blue"))+ labs(title = "Gender paygap in EU countries in 2010 vs 2018" , subtitle =  "The lower the percent, the less pay gap", caption = "Source: Eurostat" , x = "Country", y = "Gender pay gap by percent") 
+```
+
+
+# Visualization 2: Direct comparison of the gender pay gap of UK and EU average
+```{r UK focus}
+#changing column names to fit with rbind
+colnames(df1) <- c("country", "2010" , "2011" , "2012" , "2013" , "2014" , "2015" , "2016" , "2017" , "2018" , "2019" , "2020")
+#rbind to new dataset
+df3 <- data.frame(country="EU",
+                  data=c(as.numeric(df1[1 , c(2:10)]),as.numeric(df1[32 ,  c(2:10)])),
+                  year=c(2010:2018,2010:2018))
+df3$country[c(10:18)] <- "UK"
+head(df3)
+```
+
+```{r graph for UK focus}
+#graph comparing the average EU data vs UK from 2010 to 2018
+ggplot(data = df3 , aes(x = year , y = data , shape = country , color = country)) + geom_point() + labs(title = "EU average compared to UK pay gap" , subtitle = "Between 2010 and 2018" , caption = "Source: Eurostat" , x = "Year" , y = "Percent") +scale_color_manual(values = c("blue" , "red")) + geom_line()
+```
+
+# Discussion
+This data visualization project was conducted using Eurostat data of the gender pay gap in EU countries. The gender pay gap is a continuing discussion among many EU countries as women are demanding a change. Statistically, women make less money than men from the same job throughout the entire world however in this project we focus on EU countries. Firstly, in visualization 1, the bar graph demonstrates which countries have more and less of a gender pay gap. Here we can easily compare the individual countries against each other as well as comparing the individual countries against themselves between 2010 and 2018. Our hope would of course be to see a trend in the countries showing that the percent of pay gap has decreased in recent years. From the graph we can see that this is the case for most countries except for a few which have unfortunately increased. Interestingly, we can also see that unfortunately the UK has the third highest pay gap. With this disappointing result from the UK, Visualization 2 was created to demonstrate the UK gender pay gap versus the EU average from 2010 through 2018. To include the UK, we could only use the data up until 2018, as they were not included in the EU data collection from 2018 moving forward. From this scatter plot we can see that the yearly trend of the UK and EU match, and though the UK seems to be on the right trajectory (decreasing gender pay gap through the years) they are much higher than the EU average.  
